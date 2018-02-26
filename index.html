@@ -4,13 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <title>cookie</title>
+  <style>
+    *{ margin: 0; padding: 0;}
+    html,body{ height: 100%;}
+    body{
+      position: relative;
+      font-size: 1em;
+    }
+    button,label,input{
+      padding: 5px 8px;
+      font-size: 1em;
+    }
+    .popup{
+      position: absolute;
+      top: 20%; left: 10%;
+      width: 300px;
+      background: #ff0;
+      display: none;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      box-shadow: 2px 2px 10px rgba(0,0,0, 0.3);
+    }
+    .popup.on{
+      display: block;
+    }
+    .popup > div:first-child{ padding: 10px;}
+    .popup_footer{
+      position: relative;
+      padding: 10px;
+      background: #fff;
+      font-size: 14px;
+    }
+    .popup_footer > .popup_close{
+      position: absolute;
+      /* right: 10px; top: 5px; */
+      right: 0; top: 0;
+      height: 100%;
+      border: none;
+      background: #eee;
+      font-weight: bold;
+    }
+    .popup_txt{
+      margin: 20px 0 20px 0;
+    }
+  </style>
 </head>
 <body>
-  <h1>Cookie test</h1>
-  <div class="popup">
-  <button id="get" onclick="alert(getCookie('popup'))">get cookie</button>
-  <button id="set" onclick="setCookie('popup','off',1)">set cookie</button>
+
+  <h1>Cookie 팝업창 test</h1>
+  <div class="popup on">
+    <div>
+      <h1>나는 멋진 팝업창!!</h1>
+      <p class="popup_txt">
+        <!-- 공지사항 텍스트 로딩  -->
+      </p>
+    </div>
+    <div class="popup_footer">
+      <input type="checkbox" id="popoff_check">
+      <label for="popoff_check">오늘 하루 열지 않음</label>
+      <button class="popup_close">X</button>
+    </div>
+  </div>
+
+  <!-- <button id="get" onclick="alert(getCookie('popup'))">get cookie</button>
+  <button id="set" onclick="setCookie('popup','off',1)">set cookie</button> -->
   <button id="remove" onclick="deleteCookie('popup')">delete Cookie</button>
 
   <script>
@@ -25,6 +84,7 @@
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
+        // 요청한 문자열 찾기
         for(var i = 0; i <ca.length; i++) {
             var c = ca[i];
             while (c.charAt(0) == ' ') {
@@ -34,6 +94,7 @@
                 return c.substring(name.length, c.length);
             }
         }
+        // 요청한 값이 없으면 빈값 반환
         return "";
     }
 
@@ -54,7 +115,32 @@
         setCookie(name,"",-1);
     }
 
-    setCookie('popup','off');
+    // setCookie('popup','off');
+    var isPopupOff = getCookie('popup');
+    if(isPopupOff){
+      // alert('popup 비표시');
+      $('.popup').removeClass('on');
+    } else{
+      // alert('popup 표시');
+      $('.popup').addClass('on');
+    }
+
+    // 채크 + 클릭
+    $('input#popoff_check').click(function(){
+      $popoff_check = $('#popoff_check').is(':checked');
+      console.log($popoff_check);
+      if($popoff_check){
+        setCookie('popup','off');  // 쿠키 설정(popup off)
+      }
+      $('.popup').removeClass('on');
+    });
+
+    $('.popup_close').click(function(){
+      $('.popup').removeClass('on');
+    });
+
+    // 공지사항 텍스트 로딩(유지보수)
+    $('.popup_txt').load('text.txt');
 
   </script>
 </body>
