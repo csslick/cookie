@@ -130,7 +130,7 @@
       $popoff_check = $('#popoff_check').is(':checked');
       console.log($popoff_check);
       if($popoff_check){
-        setCookie('popup','off');  // 쿠키 설정(popup off)
+        setCookie('popup','off',1);  // 쿠키 설정(popup off)
       }
       $('.popup').removeClass('on');
     });
