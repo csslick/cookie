@@ -28,8 +28,6 @@
   </div>
 
   <script>
-    // AJAX load() - 서버 통신(데이터 불러오기)
-    $('.popup_txt').load('content.txt');
 
     // 쿠키 저장 setCookie(속성, 값, 만료일)
     function setCookie(cname, cvalue, exdays) {
@@ -61,29 +59,38 @@
       setCookie(name, "", -1);
     }
 
-    // 쿠키값을 확인하여 팝업창 표시(...)
-    var isPopupOff = getCookie('popup');
-    if(isPopupOff){
-      // 쿠키값(popup)이 있으면 안염
-      $('.popup').removeClass('on');
-    } else{
-      // 쿠키값이 없으면 창을 염
-      $('.popup').addClass('on');
-    }
+    $(function(){
+      // 쿠키값을 확인하여 팝업창 표시(...)
+      var isPopupOff = getCookie('popup');
+      if(isPopupOff){
+        // 쿠키값(popup)이 있으면 안염
+        $('.popup').removeClass('on');
+      } else{
+        // 쿠키값이 없으면 창을 염
+        $('.popup').addClass('on');
 
-    // 채크(오늘 하루 열지 않음)
-    $('#popoff_check').click(function(){
-      // 쿠키값 저장('속성', '값', '만료일')
-      setCookie('popup', 'off', '1');
-      $('.popup').removeClass('on');
-      console.log(getCookie());
+        // AJAX load() - 서버 통신(데이터 불러오기)
+        $('.popup_txt').load('content.txt');     
+      }
 
+
+
+      // 채크(오늘 하루 열지 않음)
+      $('#popoff_check').click(function(){
+        // 쿠키값 저장('속성', '값', '만료일')
+        setCookie('popup', 'off', '1');
+        $('.popup').removeClass('on');
+        console.log(getCookie());
+
+      });
+
+      // pooup창 닫기
+      $('.popup_close').click(function(){
+        $('.popup').removeClass('on');
+      }); 
+      
     });
 
-    // pooup창 닫기
-    $('.popup_close').click(function(){
-      $('.popup').removeClass('on');
-    });
 
 
   </script>
